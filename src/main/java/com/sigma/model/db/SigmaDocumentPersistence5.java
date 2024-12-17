@@ -23,8 +23,8 @@ public class SigmaDocumentPersistence5 {
 			+ "FLEXFIELD_VAR4,FLEXFIELD_VAR5,FLEXFIELD_VAR6,"
 			+ "FLEXFIELD_VAR7,FLEXFIELD_VAR8,FLEXFIELD_VAR9,"
 			+ "FLEXFIELD_VAR10, TENANT_ID,DOC_CHECKSUM,"
-			+ "NFT_CREATION_STATUS,UUID,STATUS,CREATED_BY, JOB_ID, DOC_MD5CHECKSUM) VALUES "
-			+ " (?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?,?,?)";
+			+ "NFT_CREATION_STATUS,UUID,STATUS,CREATED_BY, JOB_ID, DOC_MD5CHECKSUM, OBJECT_ID) VALUES "
+			+ " (?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
 	
 	static final String RESOURCE = "SELECT * FROM SIGMA_DOCUMENT  WHERE ID = ?";
 	static final String RESOURCE_BY_TENANT = "SELECT * FROM SIGMA_DOCUMENT  WHERE TENANT_ID = ?  ORDER BY CREATED_DATE DESC LIMIT 20 ";
@@ -62,7 +62,7 @@ public class SigmaDocumentPersistence5 {
 					rs.getfVar2(), rs.getfVar3(), rs.getfVar4(), rs.getfVar5(), rs.getfVar6(),
 					rs.getfVar7(), rs.getfVar8(), rs.getfVar9(), rs.getfVar10(), rs.getTenantId(),
 					rs.getDocChecksum(), rs.getNftCreationStatus(), rs.getUuid(), rs.getStatus(),
-					rs.getCreatedBy(), rs.getJobId(), rs.getMd5Checksum());			
+					rs.getCreatedBy(), rs.getJobId(), rs.getMd5Checksum(), rs.getObjectId());			
 			return insert;			
 		} catch (Exception exception) {
 			LOGGER.error("Error SigmaDocumentPersistence5.generateDocument() profile", rs, exception);
@@ -171,5 +171,6 @@ public class SigmaDocumentPersistence5 {
 		}
 	}
 
+	
 
 }
