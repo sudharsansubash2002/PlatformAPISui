@@ -26,6 +26,7 @@ public class SigmaDocument {
 	private String polyProps;
 	private String md5Checksum;
 	private String objectId;
+	
 	public String getObjectId() {
 		return objectId;
 	}

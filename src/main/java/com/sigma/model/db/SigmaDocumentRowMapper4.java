@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.sigma.model.SigmaDocument;
 
+
 public class SigmaDocumentRowMapper4 implements RowMapper<SigmaDocument> {
     @Override
     public SigmaDocument mapRow(ResultSet rs, int rowNum) throws SQLException {
