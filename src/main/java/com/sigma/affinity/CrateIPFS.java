@@ -560,6 +560,52 @@ public class CrateIPFS {
         }
     }
 
+    public JSONObject createIrecWalrus(InputStream inputStream, String fileName, String publisherUrl, int epochs) throws Exception {
+        try {
+            LOGGER.info("Storing file using Irec Walrus started for file => " + fileName);
+
+            String boundary = "------------------------abcdef1234567890";
+            String apiUrl = publisherUrl + "/v1/store?epochs=" + epochs;
+
+            HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+            // Start writing data to the connection output stream
+            OutputStream outputStream = connection.getOutputStream();
+            writeBoundary(outputStream, boundary);
+            writeContentDisposition(outputStream, "file", fileName);
+            writeFile(inputStream, outputStream);
+            writeBoundary(outputStream, boundary, true);
+
+            // Get the response from the server
+            int responseCode = connection.getResponseCode();
+            String responseContent;
+
+            if (responseCode >= 200 && responseCode < 300) {
+                responseContent = readResponseFromConnection(connection);
+                LOGGER.info("File successfully stored using Irec Walrus. Response Code: " + responseCode);
+            } else if (responseCode >= 300 && responseCode < 500) {
+//                responseContent = readErrorStream(connection);
+                LOGGER.warn("Client-side error during file storage. Response Code: " + responseCode );
+                throw new Exception("Error storing file. Client-side issue.");
+            } else {
+                throw new Exception("Error storing file. Server returned response code: " + responseCode);
+            }
+
+            JSONObject jsonResponse = new JSONObject(responseContent);
+            LOGGER.info("Response from Irec Walrus => " + jsonResponse.toString());
+
+            return jsonResponse;
+
+        } catch (Exception exception) {
+            LOGGER.error("Error storing file using Irec Walrus =>", exception);
+            return new JSONObject(); // Return an empty JSON object in case of error
+        }
+    }
+    
+    
 //    public JSONObject createIRecPrivate(InputStream inputStream, String fileName, PrivateNetwork2 networkById, String sessionId, String ipfsUrlPrivate) throws Exception{
 //    	try {
 //            LOGGER.info("Uploading file to private IPFS started for file => " + fileName);
