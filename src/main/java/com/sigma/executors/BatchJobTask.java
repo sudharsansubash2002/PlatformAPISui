@@ -99,10 +99,11 @@ public class BatchJobTask implements Callable<String> {
 			  		PolygonEdgeUtil polygonEdgeUtil = new PolygonEdgeUtil();
 			  		JSONObject nftInfo = polygonEdgeUtil.mintNftForDocument(documentO, sigmaDocFieldConfigList, infuraurl, contractaddress, privatekey, chainid, gasprice,nonceapiurl);
 			  		documentO.setUuid(nftInfo.optString("uuid"));
+					documentO.setObjectId(nftInfo.optString("objectId"));
 			  		documentO.setNftCreationStatus(1);
 			  		LOGGER.info("Thread {"+ Thread.currentThread()+"} created NFT for doc id =>  "+documentO.getSigmaId()+
 			  				", uuid => "+nftInfo.optString("uuid","Error"));
-			  		sigmaDocumentPersistence5.updateImmutableRecord(documentO, jdbcTemplate);
+			  		sigmaDocumentPersistence5.updateImmutableRecordSui(documentO, jdbcTemplate);
 			  		LOGGER.info("Thread {"+ Thread.currentThread()+"} waiting for next txn ");
 			  		
 			  	}
